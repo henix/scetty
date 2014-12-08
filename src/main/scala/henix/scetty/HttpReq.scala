@@ -35,25 +35,19 @@ case class StringBody(data: String, charset: Charset = StandardCharsets.UTF_8) e
 
 object Url {
 
-  /**
-   * Should be used with java.net.URI
-   * @return null if params is empty, to avoid generating url ends with "?"
-   */
   def query(params: Traversable[(String, String)], charset: Charset = StandardCharsets.UTF_8): String = {
-    if (params.isEmpty) {
-      null
-    } else {
-      val map = new MultiMap[String]()
-      for ((name, value) <- params) {
-        map.add(name, value)
-      }
-      UrlEncoded.encode(map, charset, true)
+    val map = new MultiMap[String]()
+    for ((name, value) <- params) {
+      map.add(name, value)
     }
+    UrlEncoded.encode(map, charset, true)
   }
 
-  def apply(baseUrl: String, params: Traversable[(String, String)], charset: Charset = StandardCharsets.UTF_8): URI = {
+  def apply(baseUrl: String, params: Traversable[(String, String)], charset: Charset = StandardCharsets.UTF_8): String = {
     require(!baseUrl.contains("?"))
-    val uri = new URI(baseUrl)
-    new URI(uri.getScheme, uri.getAuthority, uri.getPath, query(params, charset), null)
+    if (params.isEmpty)
+      baseUrl
+    else
+      baseUrl + "?" + query(params, charset)
   }
 }
