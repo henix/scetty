@@ -1,0 +1,59 @@
+package henix.scetty
+
+import java.net.URI
+import java.nio.charset.{StandardCharsets, Charset}
+
+import org.eclipse.jetty.client.api.ContentProvider
+import org.eclipse.jetty.client.util.{StringContentProvider, FormContentProvider}
+import org.eclipse.jetty.http.HttpMethod
+import org.eclipse.jetty.util.{Fields, UrlEncoded, MultiMap}
+
+case class HttpReq(
+  method: HttpMethod,
+  url: URI,
+  headers: Traversable[(String, String)],
+  body: Option[HttpBody]
+)
+
+sealed trait HttpBody {
+  def toContent: ContentProvider
+}
+
+case class FormBody(params: Traversable[(String, String)] = List.empty, charset: Charset = StandardCharsets.UTF_8) extends HttpBody {
+  override def toContent = {
+    val fields = new Fields()
+    for ((name, value) <- params) {
+      fields.add(name, value)
+    }
+    new FormContentProvider(fields, charset)
+  }
+}
+
+case class StringBody(data: String, charset: Charset = StandardCharsets.UTF_8) extends HttpBody {
+  override def toContent = new StringContentProvider(data, charset)
+}
+
+object Url {
+
+  /**
+   * Should be used with java.net.URI
+   * @return null if params is empty, to avoid generating url ends with "?"
+   */
+  def query(params: Traversable[(String, String)], charset: Charset = StandardCharsets.UTF_8): String = {
+    if (params.isEmpty) {
+      null
+    } else {
+      val map = new MultiMap[String]()
+      for ((name, value) <- params) {
+        map.add(name, value)
+      }
+      UrlEncoded.encode(map, charset, true)
+    }
+  }
+
+  def apply(baseUrl: String, params: Traversable[(String, String)], charset: Charset = StandardCharsets.UTF_8): URI = {
+    require(!baseUrl.contains("?"))
+    val uri = new URI(baseUrl)
+    new URI(uri.getScheme, uri.getAuthority, uri.getPath, query(params, charset), null)
+  }
+}
