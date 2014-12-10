@@ -36,11 +36,8 @@ case class StringBody(data: String, charset: Charset = StandardCharsets.UTF_8) e
 object Url {
 
   def query(params: Traversable[(String, String)], charset: Charset = StandardCharsets.UTF_8): String = {
-    val map = new MultiMap[String]()
-    for ((name, value) <- params) {
-      map.add(name, value)
-    }
-    UrlEncoded.encode(map, charset, true)
+    // UrlEncoded.encode does not preserve order, but sometimes we need it
+    params.map(kv => UrlEncoded.encodeString(kv._1, charset) + "=" + UrlEncoded.encodeString(kv._2, charset)).mkString("&")
   }
 
   def apply(baseUrl: String, params: Traversable[(String, String)], charset: Charset = StandardCharsets.UTF_8): String = {

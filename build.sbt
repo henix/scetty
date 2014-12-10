@@ -2,7 +2,7 @@ name := "scetty"
 
 organization := "henix"
 
-version := "0.1"
+version := "0.2"
 
 licenses := Seq("3-clause BSD" -> url("http://opensource.org/licenses/BSD-3-Clause"))
 
