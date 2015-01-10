@@ -36,7 +36,7 @@ case class StringBody(data: String, charset: Charset = StandardCharsets.UTF_8) e
 object Url {
 
   def query(params: Traversable[(String, String)], charset: Charset = StandardCharsets.UTF_8): String = {
-    // UrlEncoded.encode does not preserve order, but sometimes we need it
+    // UrlEncoded.encode does not preserve parameters' order, but there are situations we need it
     params.map(kv => UrlEncoded.encodeString(kv._1, charset) + "=" + UrlEncoded.encodeString(kv._2, charset)).mkString("&")
   }
 
