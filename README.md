@@ -1,5 +1,11 @@
 # Scetty: Scala async http client based on jetty-client
 
+## Install
+
+```
+"info.henix" % "scetty" % "0.2.1"
+```
+
 ## Examples
 
 ### imports
