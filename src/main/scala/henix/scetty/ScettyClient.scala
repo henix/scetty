@@ -27,7 +27,7 @@ class ScettyClient(jettyClient: HttpClient, defaultTimeout: FiniteDuration) {
     }
 
     val p = Promise[ContentResponse]()
-    request.send(new BufferingResponseListener() {
+    request.send(new BufferingResponseListener(jettyClient.getResponseBufferSize) {
       override def onComplete(result: Result) {
         if (result.isSucceeded) {
           p.success(new HttpContentResponse(result.getResponse, getContent, getMediaType, getEncoding))
