@@ -20,7 +20,7 @@ import henix.scetty.{FormBody, Url}
 ```scala
 import scala.concurrent.duration._
 
-val jettyClient = ...
+val jettyClient = ... // Create your jetty client object here.
 
 val scettyClient = new ScettyClient(jettyClient, 15.seconds) // This object can be safely shared between multiple threads.
 
@@ -123,3 +123,7 @@ def send(req: HttpReq, followRedirects: Option[Boolean] = None): Future[ContentR
 * Allow charset other than UTF-8 to be used in url / post form
 * Async support with `scala.concurrent.Future`
 * Represent HTTP request as a case class `HttpReq`
+
+## Links
+
+* [Java / Scala http client 库的选择](http://www.douban.com/note/446442212/)
