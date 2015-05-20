@@ -9,7 +9,12 @@ import org.eclipse.jetty.client.util.BufferingResponseListener
 import scala.concurrent.{Promise, Future}
 import scala.concurrent.duration._
 
-class ScettyClient(jettyClient: HttpClient, defaultTimeout: FiniteDuration) {
+/**
+ * @param jettyClient
+ * @param defaultTimeout
+ * @param defaultMaxLength max length of response, default 2 MiB
+ */
+class ScettyClient(jettyClient: HttpClient, defaultTimeout: FiniteDuration, defaultMaxLength: Int = 2 * 1024 * 1024) {
 
   def send(req: HttpReq, followRedirects: Option[Boolean] = None): Future[ContentResponse] = {
     val request = jettyClient.newRequest(req.url).method(req.method)
@@ -27,7 +32,7 @@ class ScettyClient(jettyClient: HttpClient, defaultTimeout: FiniteDuration) {
     }
 
     val p = Promise[ContentResponse]()
-    request.send(new BufferingResponseListener(jettyClient.getResponseBufferSize) {
+    request.send(new BufferingResponseListener(defaultMaxLength) {
       override def onComplete(result: Result) {
         if (result.isSucceeded) {
           p.success(new HttpContentResponse(result.getResponse, getContent, getMediaType, getEncoding))

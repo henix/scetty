@@ -4,7 +4,7 @@ name := "scetty"
 
 description := "Scala async http client based on jetty-client"
 
-version := "0.2.2"
+version := "0.2.3"
 
 licenses := Seq("3-clause BSD" -> url("http://opensource.org/licenses/BSD-3-Clause"))
 
