@@ -3,7 +3,7 @@
 ## Install
 
 ```
-"info.henix" % "scetty" % "0.2.3"
+"info.henix" % "scetty" % "0.2.4"
 ```
 
 DO NOT USE: v0.2.2
