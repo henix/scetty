@@ -17,7 +17,7 @@ import scala.concurrent.duration._
 class ScettyClient(jettyClient: HttpClient, defaultTimeout: FiniteDuration, defaultMaxLength: Int = 2 * 1024 * 1024) {
 
   def send(req: HttpReq, followRedirects: Option[Boolean] = None): Future[ContentResponse] = {
-    val request = jettyClient.newRequest(req.url).method(req.method)
+    val request = jettyClient.newRequest(req.url.toASCIIString).method(req.method) // #2
     for ((name, value) <- req.headers) {
       request.header(name, value)
     }
