@@ -2,11 +2,12 @@ package henix.scetty
 
 import java.util.concurrent.TimeUnit
 
+import henix.scetty.Scetty._
 import org.eclipse.jetty.client.{HttpClient, HttpContentResponse}
-import org.eclipse.jetty.client.api.{Result, ContentResponse}
+import org.eclipse.jetty.client.api.{ContentResponse, Result}
 import org.eclipse.jetty.client.util.BufferingResponseListener
 
-import scala.concurrent.{Promise, Future}
+import scala.concurrent.{ExecutionContext, Future, Promise}
 import scala.concurrent.duration._
 
 /**
@@ -17,7 +18,7 @@ import scala.concurrent.duration._
 class ScettyClient(jettyClient: HttpClient, defaultTimeout: FiniteDuration, defaultMaxLength: Int = 2 * 1024 * 1024) {
 
   def send(req: HttpReq, followRedirects: Option[Boolean] = None): Future[ContentResponse] = {
-    val request = jettyClient.newRequest(req.url.toASCIIString).method(req.method) // #2
+    val request = jettyClient.newRequest(req.url.toASCIIString).method(req.method) // Encode URL as ASCII #2
     for ((name, value) <- req.headers) {
       request.header(name, value)
     }
@@ -43,4 +44,6 @@ class ScettyClient(jettyClient: HttpClient, defaultTimeout: FiniteDuration, defa
     })
     p.future
   }
+
+  def sendAsString(req: HttpReq, followRedirects: Option[Boolean] = None)(implicit exec: ExecutionContext): Future[String] = send(req, followRedirects).map(mustOk).map(_.getContentAsString)
 }

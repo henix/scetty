@@ -6,7 +6,7 @@ import java.nio.charset.{StandardCharsets, Charset}
 import org.eclipse.jetty.client.api.ContentProvider
 import org.eclipse.jetty.client.util.{StringContentProvider, FormContentProvider}
 import org.eclipse.jetty.http.HttpMethod
-import org.eclipse.jetty.util.{Fields, UrlEncoded, MultiMap}
+import org.eclipse.jetty.util.{Fields, UrlEncoded}
 
 case class HttpReq(
   method: HttpMethod,
