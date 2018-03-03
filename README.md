@@ -3,7 +3,7 @@
 ## Install
 
 ```
-"info.henix" % "scetty" % "0.2.5"
+"info.henix" % "scetty" % "0.3"
 ```
 
 DO NOT USE: v0.2.2
@@ -43,7 +43,7 @@ val url = Url("http://www.example.com/", List("q" -> "1")) // http://www.example
 scettyClient.send(Get(url))
 ```
 
-`Url` will encode url query parameters [in the right way](http://blog.lunatech.com/2009/02/03/what-every-web-developer-must-know-about-url-encoding).
+`Url` will encode url query parameters [in the right way](https://archive.fo/dQ36g).
 
 ### GET with headers
 
@@ -128,4 +128,4 @@ def send(req: HttpReq, followRedirects: Option[Boolean] = None): Future[ContentR
 
 ## Links
 
-* [Java / Scala http client 库的选择](http://www.douban.com/note/446442212/)
+* [Java / Scala http client 库的选择](https://www.douban.com/note/446442212/)
