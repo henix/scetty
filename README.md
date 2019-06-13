@@ -43,7 +43,7 @@ val url = Url("http://www.example.com/", List("q" -> "1")) // http://www.example
 scettyClient.send(Get(url))
 ```
 
-`Url` will encode url query parameters [in the right way](https://archive.fo/dQ36g).
+`Url` will encode url query parameters [in the right way](https://web.archive.org/web/20151229061347/http://blog.lunatech.com/2009/02/03/what-every-web-developer-must-know-about-url-encoding).
 
 ### GET with headers
 
